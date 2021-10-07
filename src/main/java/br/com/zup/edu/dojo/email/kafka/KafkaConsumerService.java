@@ -14,7 +14,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Service
 public class KafkaConsumerService {
@@ -26,26 +26,23 @@ public class KafkaConsumerService {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @Transactional
     @KafkaListener(topics = "${spring.kafka.topic.transactions}")
     public void consume(TransacaoRequest request) {
         /*Instanciar e persistir email*/
-        Optional<Cliente> cliente = clienteRepository.findById(request.getIdCliente());
-        if (cliente.isPresent()) {
-            Email email = new Email(request, cliente.get());
-            emailRepository.save(email);
+        Cliente cliente = clienteRepository.getById(request.getIdCliente());
 
-            /*Enviar email*/
-            MailSender sender = new EmailSender();
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("contato@ot-bank.com");
-            message.setTo(cliente.get().getEmail());
-            message.setSubject("Houve uma operação");
-            message.setText(email.getMensagem());
-            sender.send(message);
+        Email email = new Email(request, cliente);
+        emailRepository.save(email);
 
-        } else {
-            log.error("Cliente inexistente");
-        }
+        /*Enviar email*/
+        MailSender sender = new EmailSender();
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("contato@ot-bank.com");
+        message.setTo(cliente.getEmail());
+        message.setSubject("Houve uma operação");
+        message.setText(email.getMensagem());
+        sender.send(message);
 
     }
 
