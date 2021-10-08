@@ -23,7 +23,7 @@ public class Email {
 
     public Email(TransacaoRequest request, Cliente cliente) {
         this.horaDeEnvio = Instant.now();
-        this.mensagem = request.getTipoOperacao().getMensagem(request);
+        this.mensagem = request.getTipoTransacao().getMensagem(request);
         this.cliente = cliente;
     }
 

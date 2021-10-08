@@ -6,26 +6,26 @@ import java.util.UUID;
 
 public class TransacaoRequest {
 
-    private TipoOperacao tipoOperacao;
+    private TipoTransacao tipoTransacao;
     private BigDecimal valor;
     private LocalDateTime efetuadaEm;
     private UUID idCliente;
-    private String numeroDaConta;
+    private String numeroConta;
 
     @Deprecated
     public TransacaoRequest() {
     }
 
-    public TransacaoRequest(TipoOperacao tipoOperacao, BigDecimal valor, LocalDateTime efetuadaEm, UUID idCliente, String numeroDaConta) {
-        this.tipoOperacao = tipoOperacao;
+    public TransacaoRequest(TipoTransacao tipoTransacao, BigDecimal valor, LocalDateTime efetuadaEm, UUID idCliente, String numeroConta) {
+        this.tipoTransacao = tipoTransacao;
         this.valor = valor;
         this.efetuadaEm = efetuadaEm;
         this.idCliente = idCliente;
-        this.numeroDaConta = numeroDaConta;
+        this.numeroConta = numeroConta;
     }
 
-    public TipoOperacao getTipoOperacao() {
-        return tipoOperacao;
+    public TipoTransacao getTipoTransacao() {
+        return tipoTransacao;
     }
 
     public BigDecimal getValor() {
@@ -40,7 +40,7 @@ public class TransacaoRequest {
         return idCliente;
     }
 
-    public String getNumeroDaConta() {
-        return numeroDaConta;
+    public String getNumeroConta() {
+        return numeroConta;
     }
 }
